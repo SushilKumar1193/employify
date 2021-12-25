@@ -35,7 +35,7 @@ import reducer from './reducer'
 
 import axios from 'axios'
 
-const token = localStorage.getItem('token')
+var token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
 const userLocation = localStorage.getItem('location')
 
@@ -165,7 +165,7 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await axios.post(`${host}/api/auth/login`, currentUser)
       const { user, token, location } = data
-      console.log(data)
+      // console.log(data)
       dispatch({
         type: LOGIN_USER_SUCCESS,
         payload: { user, token, location },
@@ -240,7 +240,17 @@ const AppProvider = ({ children }) => {
   const showStats = async () => {
     dispatch({ type: SHOW_STATS_BEGIN })
     try {
-      const { data } = await authFetch.get(`${host}/api/jobs/stats`)
+      // const { data } = await authFetch.get(`${host}/api/jobs/stats`)
+      const ctoken = localStorage.getItem('token');
+      console.log(ctoken)
+      const res = await fetch(`${host}/api/jobs/stats`,{
+        method: 'GET',
+        headers:{
+          'Content-Type': 'application/json',
+          'token': ctoken
+        }
+      })
+      const data =await res.json();
       dispatch({
         type: SHOW_STATS_SUCCESS,
         payload: {
@@ -249,6 +259,7 @@ const AppProvider = ({ children }) => {
         },
       })
     } catch (error) {
+      console.log("error");
       logoutUser()
     }
     clearAlert()
@@ -257,9 +268,23 @@ const AppProvider = ({ children }) => {
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN })
     try {
-      const { data } = await authFetch.patch(`${host}/api/auth/updateUser`, {
-        ...currentUser,
+      // const { data } = await authFetch.patch(`${host}/api/auth/updateUser`, {
+      //   ...currentUser,
+      // })
+
+      const ctoken = localStorage.getItem('token');
+      console.log(ctoken)
+      const res = await fetch(`${host}/api/auth/updateUser`,{
+        method: 'PATCH',
+        headers:{
+          'Content-Type': 'application/json',
+          'token': ctoken
+        }
       })
+      const data =await res.json();
+    
+    console.log(data)
+
       const { user, token, location } = data
       console.log(data);
       dispatch({
@@ -285,7 +310,19 @@ const AppProvider = ({ children }) => {
     }
     dispatch({ type: GET_JOBS_BEGIN })
     try {
-      const { data } = await authFetch(url)
+      // const { data } = await authFetch(url)
+      
+        const ctoken = localStorage.getItem('token');
+        console.log(ctoken)
+        const res = await fetch(`${url}`,{
+          method: 'POST',
+          headers:{
+            'Content-Type': 'application/json',
+            'token': ctoken
+          }
+        })
+        const data =await res.json();
+      
       console.log(data)
       const { jobs, totalJobs, numOfPages } = data
       dispatch({
@@ -296,7 +333,8 @@ const AppProvider = ({ children }) => {
           numOfPages,
         },
       })
-    } catch (error) {
+    } 
+    catch (error) {
       // logoutUser()
     }
     clearAlert()

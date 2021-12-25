@@ -13,6 +13,8 @@ var fetchuser = require('../middleware/authentication')
 
 // get all jobs
 router.post('/getAllJobs',fetchuser, async (req, res) => {
+// router.post('/getAllJobs', async (req, res) => {
+
     const { search, status, jobType, sort } = req.query
     req.body.createdBy = req.user.id;
     const queryObject = {
@@ -66,6 +68,8 @@ router.post('/getAllJobs',fetchuser, async (req, res) => {
 )
 
 router.post('/createJob',fetchuser, async (req, res) => {
+// router.post('/createJob', async (req, res) => {
+
 
     const { position, company, jobType } = req.body
 
@@ -89,6 +93,8 @@ router.post('/createJob',fetchuser, async (req, res) => {
 
 
 router.patch('/updateJob/:id',fetchuser, async (req, res) => {
+// router.patch('/updateJob/:id', async (req, res) => {
+
     const {
         body,
         user: { userId },
@@ -108,6 +114,8 @@ router.patch('/updateJob/:id',fetchuser, async (req, res) => {
 
 
 router.delete('/deleteJob/:id',fetchuser, async (req, res) => {
+// router.delete('/deleteJob/:id', async (req, res) => {
+
     const {
         user: { id },
         params: { id: jobId },
@@ -124,6 +132,8 @@ router.delete('/deleteJob/:id',fetchuser, async (req, res) => {
 })
 
 router.get('/stats',fetchuser, async (req, res) => {
+// router.get('/stats', async (req, res) => {
+
   
     let stats = await Job.aggregate([
         { $match: { createdBy: mongoose.Types.ObjectId(req.user.id) } },

@@ -97,7 +97,7 @@ import {
         isLoading: false,
         showAlert: true,
         alertType: 'danger',
-        alertText: action.payload.msg,
+        alertText: "Login error",
       }
     }
     if (action.type === LOGOUT_USER) {
@@ -184,7 +184,7 @@ import {
         isLoading: false,
         showAlert: true,
         alertType: 'danger',
-        alertText: action.payload.msg,
+        alertText: "Update error",
       }
     }
     if (action.type === GET_JOBS_BEGIN) {
