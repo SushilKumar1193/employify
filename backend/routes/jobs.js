@@ -34,9 +34,9 @@ router.post('/getAllJobs',fetchuser, async (req, res) => {
     let result = await Job.find(queryObject)
     // console.log(result)
 
-    // if (sort === 'latest') {
-    //     // result = result.sort('-createdAt')
-    // }
+    if (sort === 'latest') {
+        // result = result.sort('-createdAt')
+    }
     if (sort === 'oldest') {
         result = result.sort('createdAt')
     }
@@ -115,15 +115,15 @@ router.patch('/updateJob/:id',fetchuser, async (req, res) => {
 
 router.delete('/deleteJob/:id',fetchuser, async (req, res) => {
 // router.delete('/deleteJob/:id', async (req, res) => {
-
+    
     const {
-        user: { id },
+        // user: { id },
         params: { id: jobId },
       } = req
     
       const job = await Job.findByIdAndRemove({
         _id: jobId,
-        createdBy: id,
+        // createdBy: id,
       })
       if (!job) {
         throw new NotFoundError(`No job with id ${jobId}`)

@@ -215,20 +215,37 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CREATE_JOB_BEGIN })
     try {
       const { position, company, jobLocation, jobType, status, token } = state
+      console.log(token);
+      // await authFetch.post(`${host}/api/jobs/createJob`, {
+        // company,
+        // position,
+        // jobLocation,
+        // jobType,
+        // status,
+      // })
 
-      await authFetch.post(`${host}/api/jobs/createJob`, {
-        company,
-        position,
-        jobLocation,
-        jobType,
-        status,
-      })
+      const response = await fetch(`${host}/api/jobs/createJob`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'token' : token
+        },
+        body: JSON.stringify({company,
+          position,
+          jobLocation,
+          jobType,
+          status}) // body data type must match "Content-Type" header
+      });
+      // console.log(token)
+      const data=await response.json();
+      console.log(data)
       dispatch({
         type: CREATE_JOB_SUCCESS,
       })
       dispatch({ type: CLEAR_VALUES })
     } catch (error) {
       // if (error.response.status === 401) return
+      console.log("error")
       dispatch({
         type: CREATE_JOB_ERROR,
         payload: { msg: error.response.data.msg },
@@ -265,28 +282,36 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
-  const updateUser = async (currentUser) => {
+  const updateUser = async ({name, email, lastName, jlocation} ) => {
     dispatch({ type: UPDATE_USER_BEGIN })
     try {
       // const { data } = await authFetch.patch(`${host}/api/auth/updateUser`, {
       //   ...currentUser,
       // })
-
       const ctoken = localStorage.getItem('token');
       console.log(ctoken)
+    console.log("1")
       const res = await fetch(`${host}/api/auth/updateUser`,{
         method: 'PATCH',
         headers:{
           'Content-Type': 'application/json',
           'token': ctoken
-        }
+        },
+        body: JSON.stringify({
+          name,
+        lastName,
+        email,
+        jlocation,
       })
-      const data =await res.json();
+      })
+    console.log("12")
+
+      const data = res.json();
     
     console.log(data)
 
       const { user, token, location } = data
-      console.log(data);
+      console.log(location);
       dispatch({
         type: UPDATE_USER_SUCCESS,
         payload: { user, token, location },
@@ -294,6 +319,8 @@ const AppProvider = ({ children }) => {
 
       addUserToLocalStorage({ user, token, location })
     } catch (error) {
+      console.log("error")
+
       dispatch({
         type: UPDATE_USER_ERROR,
         // payload: { msg: error.response.data.msg },
@@ -349,13 +376,33 @@ const AppProvider = ({ children }) => {
     try {
       const { position, company, jobLocation, jobType, status } = state
 
-      await authFetch.patch(`${host}/api/jobs/${state.editJobId}`, {
-        company,
+      // await authFetch.patch(`${host}/api/jobs/updateJob/${state.editJobId}`, {
+        // company,
+        // position,
+        // jobLocation,
+        // jobType,
+        // status,
+      // })
+
+      const ctoken = localStorage.getItem('token');
+      console.log(ctoken)
+      const res = await fetch(`${host}/api/jobs/updateJob/${state.editJobId}`,{
+        method: 'PATCH',
+        headers:{
+          'Content-Type': 'application/json',
+          'token': ctoken
+        },
+        body: JSON.stringify({
+          company,
         position,
         jobLocation,
         jobType,
-        status,
+        status,})
       })
+      const data =await res.json();
+    
+    console.log(data)
+
       dispatch({
         type: EDIT_JOB_SUCCESS,
       })
@@ -372,9 +419,25 @@ const AppProvider = ({ children }) => {
   const deleteJob = async (jobId) => {
     dispatch({ type: DELETE_JOB_BEGIN })
     try {
-      await authFetch.delete(`${host}/api/jobs/${jobId}`)
+      // await authFetch.delete(`${host}/api/jobs/${jobId}`)
+      
+      const ctoken = localStorage.getItem('token');
+      console.log(ctoken)
+      const res = await fetch(`${host}/api/jobs/deleteJob/${jobId}`,{
+        method: 'DELETE',
+        headers:{
+          'Content-Type': 'application/json',
+          'token': ctoken
+        }
+      })
+      const data =await res.json();
+    
+    console.log(data)
+
       getJobs()
-    } catch (error) {
+    } 
+    catch (error) {
+      console.log(error)
       logoutUser()
     }
   }

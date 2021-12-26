@@ -113,13 +113,13 @@ router.post('/login', [
 
 //update
 router.patch('/updateUser',fetchuser,async (req, res) => {
-	const { email, name, lastName, location } = req.body
-	// if (!email || !name) {
-	//   throw new BadRequestError('Please provide all values')
-	// }
-	// const userId=req.user.id;
-	const user = await User.findOne({ _id: req.user.id })
-    // const user = await User.findById(userId).select("-password")
+	const {  name, lastName,email, location } = req.body
+	if (!email || !name) {
+	  throw new BadRequestError('Please provide all values')
+	}
+	const userId=req.user.id;
+	// const user = await User.findOne({ _id: req.user.id })
+    const user = await User.findById(userId).select("-password")
     // const user = req.user
     // console.log(user);
   
