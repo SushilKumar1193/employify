@@ -124,7 +124,6 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await axios.post(`${host}/api/auth/register`,currentUser)
       
-      console.log(data);
       // const {name,email,password} = currentUser;
       // const {data} = await fetch("http://localhost:5000/api/auth/register", {
       //       method: 'POST',
@@ -165,7 +164,6 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await axios.post(`${host}/api/auth/login`, currentUser)
       const { user, token, location } = data
-      // console.log(data)
       dispatch({
         type: LOGIN_USER_SUCCESS,
         payload: { user, token, location },
@@ -173,7 +171,6 @@ const AppProvider = ({ children }) => {
 
       addUserToLocalStorage({ user, token, location })
     } catch (error) {
-      // console.log(error.response)
       dispatch({
         type: LOGIN_USER_ERROR,
         // payload: { msg: error.response.data.msg },
@@ -215,14 +212,6 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CREATE_JOB_BEGIN })
     try {
       const { position, company, jobLocation, jobType, status, token } = state
-      console.log(token);
-      // await authFetch.post(`${host}/api/jobs/createJob`, {
-        // company,
-        // position,
-        // jobLocation,
-        // jobType,
-        // status,
-      // })
 
       const response = await fetch(`${host}/api/jobs/createJob`, {
         method: 'POST',
@@ -234,11 +223,9 @@ const AppProvider = ({ children }) => {
           position,
           jobLocation,
           jobType,
-          status}) // body data type must match "Content-Type" header
+          status})
       });
-      // console.log(token)
       const data=await response.json();
-      console.log(data)
       dispatch({
         type: CREATE_JOB_SUCCESS,
       })
@@ -259,7 +246,6 @@ const AppProvider = ({ children }) => {
     try {
       // const { data } = await authFetch.get(`${host}/api/jobs/stats`)
       const ctoken = localStorage.getItem('token');
-      console.log(ctoken)
       const res = await fetch(`${host}/api/jobs/stats`,{
         method: 'GET',
         headers:{
@@ -282,42 +268,37 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
-  const updateUser = async ({name, email, lastName, jlocation} ) => {
+  const updateUser = async ({ name, email, lastName, location }) => {
     dispatch({ type: UPDATE_USER_BEGIN })
     try {
       // const { data } = await authFetch.patch(`${host}/api/auth/updateUser`, {
       //   ...currentUser,
       // })
       const ctoken = localStorage.getItem('token');
-      console.log(ctoken)
-    console.log("1")
-      const res = await fetch(`${host}/api/auth/updateUser`,{
+      const res = await fetch(`${host}/api/auth/updateUser`, {
         method: 'PATCH',
-        headers:{
+        headers: {
           'Content-Type': 'application/json',
           'token': ctoken
         },
         body: JSON.stringify({
           name,
-        lastName,
-        email,
-        jlocation,
+          lastName,
+          email,
+          location,
+        })
       })
-      })
-    console.log("12")
 
-      const data = res.json();
-    
-    console.log(data)
+      const data = await res.json();
 
-      const { user, token, location } = data
-      console.log(location);
+
+      const { user, token } = data
       dispatch({
         type: UPDATE_USER_SUCCESS,
-        payload: { user, token, location },
+        payload: { user, token, location:data.location },
       })
 
-      addUserToLocalStorage({ user, token, location })
+      addUserToLocalStorage({ user, token, location:data.location })
     } catch (error) {
       console.log("error")
 
@@ -340,7 +321,6 @@ const AppProvider = ({ children }) => {
       // const { data } = await authFetch(url)
       
         const ctoken = localStorage.getItem('token');
-        console.log(ctoken)
         const res = await fetch(`${url}`,{
           method: 'POST',
           headers:{
@@ -350,7 +330,6 @@ const AppProvider = ({ children }) => {
         })
         const data =await res.json();
       
-      console.log(data)
       const { jobs, totalJobs, numOfPages } = data
       dispatch({
         type: GET_JOBS_SUCCESS,
@@ -385,7 +364,6 @@ const AppProvider = ({ children }) => {
       // })
 
       const ctoken = localStorage.getItem('token');
-      console.log(ctoken)
       const res = await fetch(`${host}/api/jobs/updateJob/${state.editJobId}`,{
         method: 'PATCH',
         headers:{
@@ -400,8 +378,6 @@ const AppProvider = ({ children }) => {
         status,})
       })
       const data =await res.json();
-    
-    console.log(data)
 
       dispatch({
         type: EDIT_JOB_SUCCESS,
@@ -422,7 +398,6 @@ const AppProvider = ({ children }) => {
       // await authFetch.delete(`${host}/api/jobs/${jobId}`)
       
       const ctoken = localStorage.getItem('token');
-      console.log(ctoken)
       const res = await fetch(`${host}/api/jobs/deleteJob/${jobId}`,{
         method: 'DELETE',
         headers:{
@@ -430,9 +405,8 @@ const AppProvider = ({ children }) => {
           'token': ctoken
         }
       })
-      const data =await res.json();
+      // const data =await res.json();
     
-    console.log(data)
 
       getJobs()
     } 

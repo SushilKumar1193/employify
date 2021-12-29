@@ -35,16 +35,41 @@ router.post('/getAllJobs',fetchuser, async (req, res) => {
     // console.log(result)
 
     if (sort === 'latest') {
-        // result = result.sort('-createdAt')
+        result = result.sort(function(a,b){return b.createdAt - a.createdAt})
     }
     if (sort === 'oldest') {
-        result = result.sort('createdAt')
+        // result = result.sort('createdAt')
+        result = result.sort(function(a,b){return a.createdAt - b.createdAt})
     }
     if (sort === 'a-z') {
-        result = result.sort('position')
+        // result = result.sort('position')
+        result = result.sort((a,b)=>{
+          let fa = a.position.toLowerCase();
+          let fb = b.position.toLowerCase();
+          if (fa < fb) {
+            return -1;
+        }
+        if (fa > fb) {
+            return 1;
+        }
+        return 0;
+        })
+
     }
     if (sort === 'z-a') {
-        result = result.sort('-position')
+        // result = result.sort('-position')
+        result = result.sort((a,b)=>{
+          let fa = a.position.toLowerCase();
+          let fb = b.position.toLowerCase();
+          if (fa > fb) {
+            return -1;
+        }
+        if (fa < fb) {
+            return 1;
+        }
+        return 0;
+        })
+
     }
 
     const totalJobs = result
