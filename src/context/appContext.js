@@ -355,14 +355,6 @@ const AppProvider = ({ children }) => {
     try {
       const { position, company, jobLocation, jobType, status } = state
 
-      // await authFetch.patch(`${host}/api/jobs/updateJob/${state.editJobId}`, {
-        // company,
-        // position,
-        // jobLocation,
-        // jobType,
-        // status,
-      // })
-
       const ctoken = localStorage.getItem('token');
       const res = await fetch(`${host}/api/jobs/updateJob/${state.editJobId}`,{
         method: 'PATCH',
