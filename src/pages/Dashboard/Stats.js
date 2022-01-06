@@ -16,7 +16,9 @@ const Stats = () => {
     <>
       <div className='coffee-info'>
         <span>find the app useful?</span>
-        <a href='https://www.buymeacoffee.com/johnsmilga'>
+        {/* <a href='https://www.buymeacoffee.com/johnsmilga'> */}
+        <a href='https://www.myntra.com/'>
+
           you can always buy me a coffee
         </a>
       </div>
