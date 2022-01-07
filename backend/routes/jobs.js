@@ -29,10 +29,8 @@ router.post('/getAllJobs',fetchuser, async (req, res) => {
     if (jobType !== 'all') {
         queryObject.jobType = jobType
     }
-    console.log(queryObject)
 
     let result = await Job.find(queryObject)
-    // console.log(result)
 
     if (sort === 'latest') {
         result = result.sort(function(a,b){return b.createdAt - a.createdAt})
@@ -79,7 +77,6 @@ router.post('/getAllJobs',fetchuser, async (req, res) => {
     const limit = Number(req.query.limit) || 10
     // const skip = (page - 1) * limit
     const numOfPages = Math.ceil(totalJobs.length / limit)
-    console.log(result)
     // result = result.skip(skip).limit(limit)
     // result = result
 
