@@ -78,7 +78,7 @@ const AppProvider = ({ children }) => {
   const authFetch = axios.create({
     baseURL: 'api',
   })
-  const  host = "http://localhost:5000";
+  const  host = "";
 
   // response interceptor
   authFetch.interceptors.request.use(
@@ -123,15 +123,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: REGISTER_USER_BEGIN })
     try {
       const { data } = await axios.post(`${host}/api/auth/register`,currentUser)
-      
-      // const {name,email,password} = currentUser;
-      // const {data} = await fetch("http://localhost:5000/api/auth/register", {
-      //       method: 'POST',
-      //       headers: {
-      //           'Content-Type': 'application/json'
-      //       },
-      //       body: JSON.stringify({name,email,password})
-      //   });
+   
 
       const { user, token, location } = data
       dispatch({
