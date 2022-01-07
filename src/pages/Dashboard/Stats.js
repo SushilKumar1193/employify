@@ -23,7 +23,9 @@ const Stats = () => {
         </a>
       </div>
       <StatsContainer />
-      {monthlyApplications.length > 0 && <ChartsContainer />}
+      {/* {monthlyApplications.length > 0 && <ChartsContainer />} */}
+      {monthlyApplications==null?false: monthlyApplications.length > 0 && <ChartsContainer />}
+
     </>
   )
 }
