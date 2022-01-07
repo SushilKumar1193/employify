@@ -18,7 +18,14 @@
     "react-scripts": "4.0.3",
     "recharts": "^2.1.8",
     "styled-components": "^5.3.3",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "express-validator": "^6.14.0",
+    "http-status-codes": "^2.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.1",
+    "nodemon": "^2.0.15"
   },
   "scripts": {
     "start": "cd backend && node index",
